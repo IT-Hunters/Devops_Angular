@@ -5,11 +5,13 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FoyerComponent } from './components/foyer/foyer.component';
+import { TacheListComponent } from './components/tache-list/tache-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FoyerComponent
+    FoyerComponent,
+    TacheListComponent
   ],
   imports: [
     BrowserModule,
