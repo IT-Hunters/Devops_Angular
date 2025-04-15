@@ -16,7 +16,7 @@ export interface Tache {
   providedIn: 'root'
 })
 export class TacheService {
-  private apiUrl = 'http://app:8089/projet/taches'; // Updated to match the new base URL
+  private apiUrl = 'http://localhost:8089/projet/taches'; // Updated to match the new base URL
 
   constructor(private http: HttpClient) { }
 
