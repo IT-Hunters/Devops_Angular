@@ -7,7 +7,8 @@ import { Foyer } from '../models/foyer';
   providedIn: 'root'
 })
 export class FoyerService {
-  private apiUrl = `http://localhost:8089/projet/foyer`; // Base URL: http://localhost:8089/projet/foyer or http://spring:8089/projet/foyer
+  // Use the Spring Boot container's service name and internal port
+  private apiUrl = 'http://localhost:8090/projet/foyer';
 
   constructor(private http: HttpClient) { }
 
