@@ -7,7 +7,7 @@ import { Bloc } from '../models/bloc';
   providedIn: 'root'
 })
 export class BlocService {
-  private apiUrl = 'http://localhost:8089/projet/bloc'; 
+  private apiUrl = 'http://172.29.176.160:8089/projet/bloc';
 
   constructor(private http: HttpClient) { }
 
