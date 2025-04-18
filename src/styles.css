@@ -1,1 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+    --primary: #4a6fa5;
+    --primary-dark: #395682;
+    --secondary: #6c757d;
+    --success: #28a745;
+    --danger: #dc3545;
+    --warning: #ffc107;
+    --light: #f8f9fa;
+    --dark: #343a40;
+    --white: #ffffff;
+    --shadow: rgba(0, 0, 0, 0.1);
+  }
+  
+  body {
+    background-color: #f5f7fa;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+  }

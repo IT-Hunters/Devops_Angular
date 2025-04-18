@@ -1,79 +1,182 @@
-<h2>Tache List</h2>
+<div class="container">
+  <div class="header">
+    <h1>Tache List Manager</h1>
+    <p>Manage and assign tasks to students</p>
+  </div>
 
-<!-- Add/Edit Tache Form -->
-<div>
-  <h3>{{ editingTache ? 'Edit Tache' : 'Add New Tache' }}</h3>
-  <form (ngSubmit)="editingTache ? updateTache() : addTache()">
-    <div>
-      <label>Date:</label>
-      <input type="date" [(ngModel)]="editingTache ? editingTache.dateTache : newTache.dateTache" name="dateTache" required>
+  <div class="grid">
+    <!-- Add/Edit Tache Form -->
+    <div class="card">
+      <div class="card-header">
+        <h3>{{ editingTache ? 'Edit Tache' : 'Add New Tache' }}</h3>
+      </div>
+      <form (ngSubmit)="editingTache ? updateTache() : addTache()">
+        <div class="form-group">
+          <label for="dateTache">Date:</label>
+          <input
+            type="date"
+            id="dateTache"
+            class="form-control"
+            [(ngModel)]="editingTache ? editingTache.dateTache : newTache.dateTache"
+            name="dateTache"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="duree">Duration (hours):</label>
+          <input
+            type="number"
+            id="duree"
+            class="form-control"
+            [(ngModel)]="editingTache ? editingTache.duree : newTache.duree"
+            name="duree"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="tarifHoraire">Hourly Rate:</label>
+          <input
+            type="number"
+            id="tarifHoraire"
+            class="form-control"
+            [(ngModel)]="editingTache ? editingTache.tarifHoraire : newTache.tarifHoraire"
+            name="tarifHoraire"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="typeTache">Type:</label>
+          <select
+            id="typeTache"
+            class="form-control"
+            [(ngModel)]="editingTache ? editingTache.typeTache : newTache.typeTache"
+            name="typeTache"
+            required
+          >
+            <option value="MENAGERE">Menagère</option>
+            <option value="JARDINAGE">Jardinage</option>
+            <option value="BRICOLAGE">Bricolage</option>
+          </select>
+        </div>
+        <div class="btn-group">
+          <button type="submit" class="btn btn-primary">{{ editingTache ? 'Update' : 'Add' }}</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            *ngIf="editingTache"
+            (click)="editingTache = null"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
     </div>
-    <div>
-      <label>Duration (hours):</label>
-      <input type="number" [(ngModel)]="editingTache ? editingTache.duree : newTache.duree" name="duree" required>
-    </div>
-    <div>
-      <label>Hourly Rate:</label>
-      <input type="number" [(ngModel)]="editingTache ? editingTache.tarifHoraire : newTache.tarifHoraire" name="tarifHoraire" required>
-    </div>
-    <div>
-      <label>Type:</label>
-      <select [(ngModel)]="editingTache ? editingTache.typeTache : newTache.typeTache" name="typeTache" required>
-        <option value="MENAGERE">Menagere</option>
-        <option value="JARDINAGE">Jardinage</option>
-        <option value="BRICOLAGE">Bricolage</option>
-      </select>
-    </div>
-    <button type="submit">{{ editingTache ? 'Update' : 'Add' }}</button>
-    <button type="button" *ngIf="editingTache" (click)="editingTache = null">Cancel</button>
-  </form>
-</div>
 
-<!-- Tache List Table -->
-<table>
-  <thead>
-    <tr>
-      <th>Select</th>
-      <th>ID</th>
-      <th>Date</th>
-      <th>Duration</th>
-      <th>Hourly Rate</th>
-      <th>Type</th>
-      <th>Final Tariff</th>
-      <th>Assigned Etudiant</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let tache of taches">
-      <td><input type="checkbox" (change)="toggleTaskSelection(tache)" [checked]="tasksToAssign.includes(tache)"></td>
-      <td>{{ tache.idTache }}</td>
-      <td>{{ tache.dateTache }}</td>
-      <td>{{ tache.duree }}</td>
-      <td>{{ tache.tarifHoraire }}</td>
-      <td>{{ tache.typeTache }}</td>
-      <td>{{ tache.tarifFinal }}</td>
-      <td>{{ tache.etudiantOrdinaire ? tache.etudiantOrdinaire.nomEt + ' ' + tache.etudiantOrdinaire.prenomEt : 'Not Assigned' }}</td>
-      <td>
-        <button (click)="editTache(tache)">Edit</button>
-        <button (click)="deleteTache(tache.idTache)">Delete</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+    <!-- Assign Tasks to Etudiant Form -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Assign Tasks to Etudiant</h3>
+      </div>
+      <form (ngSubmit)="addTasksAndAffectToEtudiant()">
+        <div class="form-group">
+          <label for="nomEt">Nom Etudiant:</label>
+          <input
+            type="text"
+            id="nomEt"
+            class="form-control"
+            [(ngModel)]="nomEt"
+            name="nomEt"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="prenomEt">Prenom Etudiant:</label>
+          <input
+            type="text"
+            id="prenomEt"
+            class="form-control"
+            [(ngModel)]="prenomEt"
+            name="prenomEt"
+            required
+          />
+        </div>
+        <div class="btn-group">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="tasksToAssign.length === 0"
+          >
+            Assign Selected Tasks
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-<!-- Assign Tasks to Etudiant Form -->
-<div>
-  <h3>Assign Tasks to Etudiant</h3>
-  <form (ngSubmit)="addTasksAndAffectToEtudiant()">
-    <div>
-      <label>Nom Etudiant:</label>
-      <input type="text" [(ngModel)]="nomEt" name="nomEt" required>
+  <!-- Tache List Table -->
+  <div class="card">
+    <div class="card-header">
+      <h3>Task List</h3>
     </div>
-    <div>
-      <label>Prenom Etudiant:</label>
-      <input type="text" [(ngModel)]="prenomEt" name="prenomEt" required>
-    </div>
-    <button type="submit" [disabled]="tasksToAssign.length === 0">Assign Selected Tasks</button>
-  </form>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 50px;">
+            <input type="checkbox" class="checkbox-lg" (change)="toggleAllTasks($event)" />
+          </th>
+          <th style="width: 50px;">ID</th>
+          <th>Date</th>
+          <th>Duration</th>
+          <th>Hourly Rate</th>
+          <th>Type</th>
+          <th>Final Tariff</th>
+          <th>Assigned Etudiant</th>
+          <th style="width: 120px;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tache of taches">
+          <td>
+            <input
+              type="checkbox"
+              class="checkbox-lg"
+              (change)="toggleTaskSelection(tache)"
+              [checked]="tasksToAssign.includes(tache)"
+            />
+          </td>
+          <td>{{ tache.idTache }}</td>
+          <td>{{ tache.dateTache | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ tache.duree }} h</td>
+          <td>{{ tache.tarifHoraire }} €</td>
+          <td>
+            <span
+              class="badge"
+              [ngClass]="{
+                'badge-menagere': tache.typeTache === 'MENAGERE',
+                'badge-jardinage': tache.typeTache === 'JARDINAGE',
+                'badge-bricolage': tache.typeTache === 'BRICOLAGE'
+              }"
+            >
+              {{ tache.typeTache }}
+            </span>
+          </td>
+          <td>{{ tache.tarifFinal }} €</td>
+          <td>
+            {{ tache.etudiantOrdinaire ? tache.etudiantOrdinaire.nomEt + ' ' + tache.etudiantOrdinaire.prenomEt : 'Not Assigned' }}
+          </td>
+          <td>
+            <div class="action-buttons">
+              <button class="btn btn-sm btn-primary" (click)="editTache(tache)">Edit</button>
+              <button class="btn btn-sm btn-danger" (click)="deleteTache(tache.idTache)">
+                Delete
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="taches.length === 0">
+          <td colspan="9" style="text-align: center;">No tasks available</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

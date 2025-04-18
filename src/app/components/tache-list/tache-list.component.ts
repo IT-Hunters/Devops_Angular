@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { TacheService, Tache } from '../../services/tache.service';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-tache-list',
@@ -22,7 +21,7 @@ export class TacheListComponent implements OnInit {
   prenomEt: string = '';
   tasksToAssign: Tache[] = [];
 
-  constructor(private tacheService: TacheService) { }
+  constructor(private tacheService: TacheService) {}
 
   ngOnInit(): void {
     this.loadTaches();
@@ -40,6 +39,8 @@ export class TacheListComponent implements OnInit {
   }
 
   addTache(): void {
+    // Calculate tarifFinal
+    this.newTache.tarifFinal = this.newTache.duree * this.newTache.tarifHoraire;
     this.tacheService.addTache(this.newTache).subscribe({
       next: (tache) => {
         this.taches.push(tache);
@@ -57,6 +58,8 @@ export class TacheListComponent implements OnInit {
 
   updateTache(): void {
     if (this.editingTache) {
+      // Calculate tarifFinal
+      this.editingTache.tarifFinal = this.editingTache.duree * this.editingTache.tarifHoraire;
       this.tacheService.updateTache(this.editingTache).subscribe({
         next: (updatedTache) => {
           const index = this.taches.findIndex(t => t.idTache === updatedTache.idTache);
@@ -105,6 +108,15 @@ export class TacheListComponent implements OnInit {
       this.tasksToAssign.push(tache);
     } else {
       this.tasksToAssign.splice(index, 1);
+    }
+  }
+
+  toggleAllTasks(event: Event): void {
+    const checked = (event.target as HTMLInputElement).checked;
+    if (checked) {
+      this.tasksToAssign = [...this.taches];
+    } else {
+      this.tasksToAssign = [];
     }
   }
 
