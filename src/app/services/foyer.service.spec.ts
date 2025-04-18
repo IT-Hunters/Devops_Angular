@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FoyerService } from './foyer.service';
+import { FoyerService } from './Bloc.service';
 
 describe('FoyerService', () => {
   let service: FoyerService;

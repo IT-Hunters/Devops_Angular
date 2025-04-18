@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FoyerComponent } from './foyer.component';
+import { FoyerComponent } from './bloc.component';
 
 describe('FoyerComponent', () => {
   let component: FoyerComponent;
